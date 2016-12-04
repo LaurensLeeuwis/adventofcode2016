@@ -12,10 +12,11 @@ fun main(args: Array<String>) {
         val room = Room(encryptedName, sector, checksum)
 
         if (room.isReal()){
-            sectorIdSum += room.sectorId
+            if(room.getRealName() == "northpole object storage"){
+                println(room.sectorId)
+                return
+            }
         }
     }
-
-    println(sectorIdSum)
 
 }

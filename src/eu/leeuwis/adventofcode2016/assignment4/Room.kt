@@ -26,17 +26,31 @@ class Room(val encryptedName: String, val sectorId: Int, val checksum: String) {
             for (i in 1..it.size) {
                 val checkSumChar = checksum[checksumPosition]
                 if (!it.contains(checkSumChar)) {
-                    return false;
+                    return false
                 }
 
                 checksumPosition++
                 if (checksumPosition >= checksum.length) {
-                    return true;
+                    return true
                 }
             }
         }
 
         return false;
+    }
+
+
+    fun getRealName() : String {
+        return encryptedName.split("-").filter { it.length > 0 }.map {
+            it.map {
+                val value = it.toInt();
+                val posAlphabet = value - 97
+                val newPosAlphabet = (sectorId + posAlphabet).mod(26)
+                val newChar = (newPosAlphabet + 97).toChar()
+
+                newChar
+            }.joinToString(separator = "")
+        }.joinToString(separator = " ")
     }
 
 }
