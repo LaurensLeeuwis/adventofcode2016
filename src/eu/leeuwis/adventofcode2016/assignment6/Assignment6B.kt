@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
     }
 
     val errorCorrectedMessage = positionCharacterCount.map{
-        val char = it.value.maxBy{it.value}!!.key
+        val char = it.value.minBy{it.value}!!.key
         val pos = it.key
         pos to char
     }.sortedBy {
