@@ -2,8 +2,8 @@ package eu.leeuwis.adventofcode2016.assignment5
 
 import java.security.MessageDigest
 
-private val HEX_CHARS = "0123456789abcdef".toCharArray()
-private val MD5_DIGEST = MessageDigest.getInstance("MD5")
+val HEX_CHARS = "0123456789abcdef".toCharArray()
+val MD5_DIGEST = MessageDigest.getInstance("MD5")
 
 fun main(args: Array<String>) {
 
@@ -39,7 +39,7 @@ fun isPassword(md5hash: ByteArray) : Boolean {
     return (octet and 0xF0).ushr(4) == 0
 }
 
-fun getPasswordCharacter(md5hash: ByteArray) : Char {
+private fun getPasswordCharacter(md5hash: ByteArray) : Char {
     val octet = md5hash.get(2).toInt()
     return HEX_CHARS[octet and 0x0F]
 }
