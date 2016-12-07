@@ -24,7 +24,6 @@ fun main(args: Array<String>) {
     println(password)
 }
 
-
 private fun getPasswordPosition(md5hash: ByteArray) : Int {
     val octet = md5hash.get(2).toInt()
     return octet and 0x0F
