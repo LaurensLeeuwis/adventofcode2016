@@ -104,6 +104,4 @@ enum class Number {
     open fun down() : Number {
         return this
     }
-
-
 }

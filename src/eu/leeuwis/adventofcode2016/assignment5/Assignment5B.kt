@@ -2,7 +2,6 @@ package eu.leeuwis.adventofcode2016.assignment5
 
 fun main(args: Array<String>) {
 
-    val roomId = "cxdnnyjw"
     val password = "________".toCharArray()
     var increment = 0;
 
