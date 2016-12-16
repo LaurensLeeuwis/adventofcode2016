@@ -17,6 +17,16 @@ fun calculateHash(input: String):CharArray {
     return MD5_DIGEST.digest(input.toByteArray()).flatMap { it.toHex() }.toCharArray()
 }
 
+fun calculateHash(input: String, times: Int):CharArray{
+    var result = input;
+
+    repeat(times+1){
+        result = calculateHash(result).joinToString(separator = "")
+    }
+
+    return result.toCharArray()
+}
+
 fun containsFiveOf(md5hash: CharArray, char: Char): Boolean {
     md5hash.sliding(5).forEach{
         if (it.sliding(2).map { it[0] == it[1] }.reduce { a, b -> a && b }) {
@@ -28,16 +38,6 @@ fun containsFiveOf(md5hash: CharArray, char: Char): Boolean {
     return false
 }
 
-fun findFives(md5hash: CharArray) : CharArray {
-    val  result : MutableSet<Char> = mutableSetOf()
-
-    md5hash.sliding(5).forEach{if(it.sliding(2).map{it[0] == it[1]}.reduce{a,b -> a && b}){
-        result.add(it[0])
-    }}
-
-    return result.toCharArray()
-}
-
 fun isFives(md5hash: CharArray): Boolean {
     md5hash.sliding(5).forEach{
         if (it.sliding(2).map { it[0] == it[1] }.reduce { a, b -> a && b }) {
@@ -46,7 +46,6 @@ fun isFives(md5hash: CharArray): Boolean {
     }
     return false
 }
-
 
 fun isTriple(md5hash: CharArray): Boolean {
     return findTripleChar(md5hash) != null
@@ -62,4 +61,8 @@ fun findTripleChar(md5hash: CharArray): Char? {
 
 fun CharArray.sliding(size: Int): List<CharArray> {
     return dropLast(size - 1).mapIndexed { index, boolean -> copyOfRange(index, index + size) }
+}
+
+fun inputForIteration(iteration: Int): String{
+    return givenInput + iteration;
 }

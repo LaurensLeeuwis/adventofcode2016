@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
         val max = if (indexHash.isEmpty()){0}else{indexHash.keys.max()!!}
 
         for (i in max..iteration + 1000){
-            val hash = calculateHash(inputForIteration(i))
+            val hash = calculateHash(inputForIteration(i), 2016)
 
             indexHash.put(i, hash)
             if (isTriple(hash)){
@@ -34,6 +34,7 @@ fun main(args: Array<String>) {
             val found = fives.filter{it > iteration}.firstOrNull{ containsFiveOf(indexHash.get(it)!!, threesChar)}
             if (found != null){
                 foundValues++
+                println("found ${foundValues}")
             }
         }
 
@@ -42,5 +43,3 @@ fun main(args: Array<String>) {
 
     println("result: ${iteration-1}")
 }
-
-
