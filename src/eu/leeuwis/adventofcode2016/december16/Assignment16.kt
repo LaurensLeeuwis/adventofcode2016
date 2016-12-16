@@ -33,15 +33,19 @@ fun BooleanArray.cut(cutsize: Int) : List<BooleanArray> {
     for (i in 0..size-1 step cutsize){
         result.add(sliceArray(i..i+cutsize-1))
     }
-    return result;
+    return result
 }
 
-fun checksum(input: BooleanArray): BooleanArray {
-    val result = input.cut(2).map { it[0] == it[1] }.toBooleanArray()
+fun singleChecksum(input: BooleanArray): BooleanArray {
+    return input.cut(2).map{it.reduce { a,b -> a == b}}.toBooleanArray()
+}
 
-    if (result.size % 2 == 0){
-        return checksum(result)
-    } else {
-        return result
+fun checksum(input: BooleanArray): BooleanArray{
+    var result = singleChecksum(input)
+
+    while (result.size %2 == 0){
+        result = singleChecksum(result)
     }
+
+    return result
 }
