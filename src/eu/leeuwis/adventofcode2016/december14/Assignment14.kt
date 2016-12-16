@@ -28,6 +28,26 @@ fun containsFiveOf(md5hash: CharArray, char: Char): Boolean {
     return false
 }
 
+fun findFives(md5hash: CharArray) : CharArray {
+    val  result : MutableSet<Char> = mutableSetOf()
+
+    md5hash.sliding(5).forEach{if(it.sliding(2).map{it[0] == it[1]}.reduce{a,b -> a && b}){
+        result.add(it[0])
+    }}
+
+    return result.toCharArray()
+}
+
+fun isFives(md5hash: CharArray): Boolean {
+    md5hash.sliding(5).forEach{
+        if (it.sliding(2).map { it[0] == it[1] }.reduce { a, b -> a && b }) {
+           return true
+        }
+    }
+    return false
+}
+
+
 fun isTriple(md5hash: CharArray): Boolean {
     return findTripleChar(md5hash) != null
 }
