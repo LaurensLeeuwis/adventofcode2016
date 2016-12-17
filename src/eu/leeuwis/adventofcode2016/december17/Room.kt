@@ -16,41 +16,41 @@ class Room(val passcode: String, val path: String) {
         val hash = MD5_DIGEST.digest((passcode + path).toByteArray())
         val currentLocation = calculateLocation(path)
 
-        isUpOpen = isOpen(hash, 0) && currentLocation.x != 0
-        isDownOpen = isOpen(hash, 1) && currentLocation.x != 3
-        isLeftOpen = isOpen(hash, 2) && currentLocation.y != 0
-        isRightOpen = isOpen(hash, 3) && currentLocation.y != 3
-        hasVault = currentLocation == Coordinate(3,3)
+        hasVault = currentLocation == Coordinate(3, 3)
+        isUpOpen = isOpen(hash, 0) && currentLocation.x != 0 && !hasVault
+        isDownOpen = isOpen(hash, 1) && currentLocation.x != 3 && !hasVault
+        isLeftOpen = isOpen(hash, 2) && currentLocation.y != 0 && !hasVault
+        isRightOpen = isOpen(hash, 3) && currentLocation.y != 3 && !hasVault
     }
 
-    fun getOpenRooms() : List<Room> {
-        val openRooms : MutableList<Room> = mutableListOf()
-        if (isDownOpen){
+    fun getOpenRooms(): List<Room> {
+        val openRooms: MutableList<Room> = mutableListOf()
+        if (isDownOpen) {
             openRooms.add(Room(passcode, path + "D"))
         }
-        if (isUpOpen){
+        if (isUpOpen) {
             openRooms.add(Room(passcode, path + "U"))
         }
-        if (isRightOpen){
+        if (isRightOpen) {
             openRooms.add(Room(passcode, path + "R"))
         }
-        if (isLeftOpen){
+        if (isLeftOpen) {
             openRooms.add(Room(passcode, path + "L"))
         }
         return openRooms
     }
 
     private fun calculateLocation(path: String): Coordinate {
-        var coordinate = Coordinate(0,0)
+        var coordinate = Coordinate(0, 0)
 
-        path.forEach{
-            if (it == 'U'){
+        path.forEach {
+            if (it == 'U') {
                 coordinate = coordinate.up()
-            } else if (it == 'D'){
+            } else if (it == 'D') {
                 coordinate = coordinate.down()
-            } else if (it == 'R'){
+            } else if (it == 'R') {
                 coordinate = coordinate.right()
-            } else if (it == 'L'){
+            } else if (it == 'L') {
                 coordinate = coordinate.left()
             }
         }
@@ -67,16 +67,19 @@ class Room(val passcode: String, val path: String) {
 }
 
 
-private data class Coordinate(val x:Int, val y:Int){
+private data class Coordinate(val x: Int, val y: Int) {
     fun up(): Coordinate {
         return Coordinate(x - 1, y)
     }
+
     fun down(): Coordinate {
         return Coordinate(x + 1, y)
     }
+
     fun left(): Coordinate {
         return Coordinate(x, y - 1)
     }
+
     fun right(): Coordinate {
         return Coordinate(x, y + 1)
     }
