@@ -15,17 +15,3 @@ fun main(args: Array<String>){
 
     println("found ${iteration}")
 }
-
-
-fun nextCoordinates(coordinates: List<Coordinate>, visited: MutableList<Coordinate>): List<Coordinate> {
-    val nextCoordinates : MutableList<Coordinate> = mutableListOf()
-
-    coordinates.forEach {
-        if (!visited.contains(it)){
-            nextCoordinates.addAll(it.getOpenSpaces())
-        }
-    }
-    visited.addAll(coordinates)
-
-    return nextCoordinates
-}
