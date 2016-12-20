@@ -1005,3 +1005,9 @@ val givenInput = """3382920125-3384842620
 3184192645-3197212232
 573558521-576486773
 3077610247-3082214069"""
+
+val blocked = givenInput.split("\n").map{range ->
+    val begin = range.substringBefore("-").toLong()
+    val end = range.substringAfter("-").toLong()
+    Pair(begin, end)
+}.sortedBy{it.first}

@@ -1,11 +1,6 @@
 package eu.leeuwis.adventofcode2016.december20
 
 fun main(args: Array<String>){
-    val blocked = givenInput.split("\n").map{range ->
-        val begin = range.substringBefore("-").toLong()
-        val end = range.substringAfter("-").toLong()
-        Pair(begin, end)
-    }.sortedBy{it.first}
 
     var min : Long = 0
 
