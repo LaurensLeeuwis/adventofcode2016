@@ -1,51 +1,128 @@
 package eu.leeuwis.adventofcode2016.december21
 
-fun String.rotateLeft(steps: Int) : String {
+fun String.rotateLeft(steps: Int): String {
     val shift = steps % this.length
-    val toEnd = this.substring(0..shift-1)
-    val rest = this.substring(shift..this.length-1)
+    val toEnd = this.substring(0..shift - 1)
+    val rest = this.substring(shift..this.length - 1)
     return rest + toEnd
 }
 
-fun String.rotateRight(steps: Int) : String {
+fun String.unRotateLeft(steps: Int): String {
+    return rotateRight(steps)
+}
+
+fun String.rotateRight(steps: Int): String {
     val shift = steps % this.length
-    val toBegin = this.substring(this.length-shift..this.length-1)
-    val rest = this.substring(0..this.length-shift-1)
+    val toBegin = this.substring(this.length - shift..this.length - 1)
+    val rest = this.substring(0..this.length - shift - 1)
     return toBegin + rest
 }
 
+fun String.unRotateRight(steps: Int): String {
+    return rotateLeft(steps)
+}
+
 fun String.reversePositions(from: Int, to: Int): String {
-    val before = this.substring(0..from-1)
-    val after = this.substring(to+1..this.length -1)
+    val before = this.substring(0..from - 1)
+    val after = this.substring(to + 1..this.length - 1)
     val reversed = this.substring(from..to).reversed()
     return before + reversed + after
 }
 
+fun String.unReversePositions(from: Int, to: Int): String {
+    return reversePositions(from, to)
+}
 
-fun String.swapPosition(from: Int, to: Int): String{
-    val before = (0..(this.length-1)).toMutableList()
+fun String.swapPosition(from: Int, to: Int): String {
+    val before = (0..(this.length - 1)).toMutableList()
     before[to] = from
     before[from] = to
-    return before.map{this[it]}.joinToString(separator = "")
+    return before.map { this[it] }.joinToString(separator = "")
+}
+
+fun String.unSwapPosition(from: Int, to: Int): String {
+    return swapPosition(from, to)
 }
 
 fun String.swapLetters(from: Char, to: Char): String {
     return this.map { if (it == from) to else if (it == to) from else it }.joinToString(separator = "")
 }
 
+fun String.unSwapLetters(from: Char, to: Char): String {
+    return swapLetters(from, to)
+}
+
 fun String.movePosition(from: Int, to: Int): String {
-    val before = (0..(this.length-1)).toMutableList()
+    val before = (0..(this.length - 1)).toMutableList()
     before.remove(from)
     val after = before.subList(0, to) + from + before.subList(to, before.size)
-    return after.map{this[it]}.joinToString(separator = "")
+    return after.map { this[it] }.joinToString(separator = "")
+}
+
+fun String.unMovePosition(from: Int, to: Int): String {
+    return movePosition(to,from)
+}
+
+
+fun main(args: Array<String>){
+    println("abcdef".rotateBasedOnLetter('b').unRotateBasedOnLetter('b'))
 }
 
 fun String.rotateBasedOnLetter(letter: Char): String {
     var index = this.indexOf(letter)
-    if (index >= 4){
+    if (index >= 4) {
         index++
     }
     return rotateRight(1 + index)
+}
+
+fun String.unRotateBasedOnLetter(letter: Char): String {
+    for (i in 0..this.length-1){
+        val thisTry = rotateLeft(i)
+        if (thisTry.rotateBasedOnLetter(letter) == this){
+            return thisTry
+        }
+    }
+    return this
+}
+
+
+fun scramble(unscrambled: String): String {
+    var scrambled = unscrambled
+    givenInput.split("\n").forEach {
+        if (it.startsWith("rotate")) {
+            if (it.contains("left")) {
+                val steps = Integer.parseInt(it.substringAfter("left ").substringBefore(" step"))
+                scrambled = scrambled.rotateLeft(steps)
+            } else if (it.contains("right")) {
+                val steps = Integer.parseInt(it.substringAfter("right ").substringBefore(" step"))
+                scrambled = scrambled.rotateRight(steps)
+            } else if (it.contains("position")) {
+                val letter = it.substringAfter("letter ")[0]
+                scrambled = scrambled.rotateBasedOnLetter(letter)
+            }
+        } else if (it.startsWith("swap")) {
+            if (it.contains("letter")) {
+                val firstLetter = it.substringAfter("swap letter ").substringBefore(" with")[0]
+                val secondLetter = it.substringAfter("with letter ")[0]
+                scrambled = scrambled.swapLetters(firstLetter, secondLetter)
+            } else if (it.contains("position")) {
+                val firstPosition = Integer.parseInt(it.substringAfter("swap position ").substringBefore(" with"))
+                val secondPosition = Integer.parseInt(it.substringAfter("with position "))
+                scrambled = scrambled.swapPosition(firstPosition, secondPosition)
+            }
+        } else if (it.startsWith("move")) {
+            val firstPosition = Integer.parseInt(it.substringAfter("move position ").substringBefore(" to"))
+            val secondPosition = Integer.parseInt(it.substringAfter("to position "))
+            scrambled = scrambled.movePosition(firstPosition, secondPosition)
+        } else if (it.startsWith("reverse")) {
+            val firstPosition = Integer.parseInt(it.substringAfter("reverse positions ").substringBefore(" through"))
+            val secondPosition = Integer.parseInt(it.substringAfter("through "))
+            scrambled = scrambled.reversePositions(firstPosition, secondPosition)
+
+        }
+    }
+    return scrambled
 }
 
 val givenInput = """rotate left 2 steps
