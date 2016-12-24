@@ -61,7 +61,7 @@ private fun getPossiblePaths(numbers: Map<Coordinate, Int>): Set<List<Path>> {
     val combinations : Set<List<Coordinate>> = possibleCombinations(others)
 
     combinations.forEach{
-        paths.add(toPaths(listOf(first) + it))
+        paths.add(toPaths(listOf(first) + it + listOf(first)))
     }
 
     return paths

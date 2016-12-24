@@ -1,20 +1,5 @@
 package eu.leeuwis.adventofcode2016.december24
 
-
-fun getPossiblePaths(numbers: Map<Coordinate, Int>): Set<List<Path>> {
-    val paths: MutableSet<List<Path>> = mutableSetOf()
-    val first = numbers.filter { it.value == 0 }.keys.first()
-    val others = numbers.filter { it.value != 0 }.keys
-
-    val combinations : Set<List<Coordinate>> = possibleCombinations(others)
-
-    combinations.forEach{
-        paths.add(toPaths(listOf(first) + it))
-    }
-
-    return paths
-}
-
 fun possibleCombinations(others: Set<Coordinate>): Set<List<Coordinate>> {
 
     fun possibleCombinations(prefix: List<Coordinate>, rest: Set<Coordinate>, collector: MutableList<List<Coordinate>>) : List<List<Coordinate>> {
