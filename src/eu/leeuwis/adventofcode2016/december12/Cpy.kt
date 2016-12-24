@@ -7,7 +7,9 @@ class Cpy(val first: String, val second: String) : Instruction {
         result.putAll(registers)
 
         val from = registers.getOrElse(first, { Register(Integer.parseInt(first)) })
-        result.put(second, from)
+        if (registers.contains(second)){
+            result.put(second, from)
+        }
 
         return result
     }
